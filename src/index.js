@@ -1,7 +1,7 @@
 import iconPath from './logo.png'
 import Preview from './Preview/preview'
 var Spotify = require('node-spotify-api');
-import './general.css'
+import 'index.css'
 
 export const icon = iconPath
 
@@ -16,7 +16,8 @@ export const fn = ({term, display, actions}) => {
   // console.log("CIAO ", term);
   spotify.search({
     type: 'track',
-    query: term
+    query: term,
+    limit: 10
   }, function(err, data, actions) {
     if (err) {
       return console.log('Error occurred: ' + err);
@@ -56,13 +57,16 @@ export const fn = ({term, display, actions}) => {
           }
         ]
       })
+      var preview = {
+        'padding':'0'
+      }
       // console.log(searchResult);
       display({
         icon,
         title: results.complete,
         subtitle: 'test',
         onSelect: () => search(uri),
-        getPreview: () => <Preview searchResult={searchResult}/>
+        getPreview: () => <Preview style={preview} searchResult={searchResult}/>
       });
     } else {
       var response = 'No matches for ' + term

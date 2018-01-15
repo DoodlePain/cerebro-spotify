@@ -6,6 +6,7 @@
     "cerebro-tools": "^0.1.8",
     "cerebro-ui": "^0.0.16",
     "node-spotify-api": "^1.0.7",
+    "radium": "^0.21.0",
     "spotify-web-api-node": "^2.5.0"
   },
   "devDependencies": {

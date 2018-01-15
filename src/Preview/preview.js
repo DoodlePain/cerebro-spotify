@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Item from './item'
+import '../index.css'
 
 class Preview extends Component {
   // const list = "<h2>Ciao</h2>"
@@ -12,10 +13,10 @@ class Preview extends Component {
 
   render() {
     let list = []
-    Object.keys(this.props.searchResult).map((result) => {
+    Object.keys(this.props.searchResult).map((result, index) => {
       list = [
         ...list,
-        <Item content={this.props.searchResult[result]}/>
+        <Item content={this.props.searchResult[result]} key={index}/>
       ]
     })
     // this.props.searchResult.map((item) => {
@@ -28,10 +29,17 @@ class Preview extends Component {
     //    ]
     //
     // })
-    return (<div className="PreviewList">
+
+    var wrapper = {
+      'margin-top': '-30px',
+      'margin-left': '-5px',
+      height: '90%',
+      'padding-left': '5px'
+    }
+    return (<ul className="wrapper" style={wrapper}>
+
       {list}
-      {/* <h2>Ciao</h2> */}
-    </div>)
+    </ul>)
   }
 }
 
