@@ -25,6 +25,7 @@ class Item extends Component {
       'background-color': 'grey'
     }
     if (this.props.content.complete.length > 48) {
+<<<<<<< HEAD
       item = {
         'align-items': 'center',
         'height': '10%',
@@ -39,6 +40,11 @@ class Item extends Component {
         'text-size-adjust': '100%',
         'height': '15%'
       }
+=======
+      item.push(  
+        'height': '15%'
+      )
+>>>>>>> b7e41e0efa88a779399ad38b49f3b159e237c054
     } else {
       item = {
         'align-items': 'center',

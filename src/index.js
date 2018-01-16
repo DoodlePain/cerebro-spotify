@@ -33,7 +33,11 @@ export const fn = ({term, display, actions}) => {
       spotify.search({
       type: 'track',
       query: sterm,
+<<<<<<< HEAD
       limit: 10
+=======
+      limit: 5
+>>>>>>> b7e41e0efa88a779399ad38b49f3b159e237c054
     }, function(err, data, actions) {
       if (err) {
         return console.log('Error occurred: ' + err);
