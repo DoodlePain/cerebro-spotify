@@ -1,7 +1,5 @@
 import React, {Component} from 'react'
 import Item from './item'
-import '../index.css'
-
 class Preview extends Component {
   constructor(props) {
     super(props);
