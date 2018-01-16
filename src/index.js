@@ -13,68 +13,70 @@ export const fn = ({term, display, actions}) => {
     actions.hideWindow()
   }
   var spotify = new Spotify({id: "5fc756d3b82e45df90d14b07517ade30", secret: "c50bf876f1e24f79a7648f1785426d7a"});
-  // console.log("CIAO ", term);
-  spotify.search({
-    type: 'track',
-    query: term,
-    limit: 10
-  }, function(err, data, actions) {
-    if (err) {
-      return console.log('Error occurred: ' + err);
-    }
-    if (data.tracks.total != 0) {
-      // console.log("Ciao", data);
-      var uri = data.tracks.items[0].external_urls.spotify
-      // console.log(uri);
-      var artist = data.tracks.items[0].artists[0].name
-      var name = data.tracks.items[0].name
-      var duration = data.tracks.items[0].duration
-      var complete = name + ' - ' + artist
-      // searchResult = [
-      //   ...searchResult, {
-      //     name: name,
-      //     artist: artist,
-      //     uri: uri,
-      //     duration: duration,
-      //     complete: complete
-      //   }
-      // ]
-      const results = {
-        name: name,
-        artist: artist,
-        duration: duration,
-        complete: complete
-      };
+  const regex = /((\bspotify\b)|(\bs\b))+\s/g;
+  const regexS = /((\bs\b))+\s/g
+  var found = term.match(regex)
+  var sterm = ''
+  if (found !== null) {
 
-      var searchResult = []
-      Object.keys(data.tracks.items).map((result) => {
-        console.log(data.tracks.items[result]);
-        let c = data.tracks.items[result].name + ' - ' + data.tracks.items[result].artists[0].name
-        searchResult = [
-          ...searchResult, {
-            complete: c,
-            uri: data.tracks.items[result].external_urls.spotify
-          }
-        ]
-      })
-      var preview = {
-        'padding':'0'
-      }
-      // console.log(searchResult);
-      display({
-        icon,
-        title: results.complete,
-        subtitle: 'test',
-        onSelect: () => search(uri),
-        getPreview: () => <Preview style={preview} searchResult={searchResult}/>
-      });
+    if (term.match(regexS)) {
+      sterm = term.slice(2)
     } else {
-      var response = 'No matches for ' + term
-
-      display({icon, title: response})
+      sterm = term.slice(8)
     }
-  });
-  // if (term === 'spotify') {
-  // display({title: `Searching ${term} on Spotify`})
-  // }
+    if(sterm===''){
+        var response = 'Type the title of a song or an Artist'
+
+        display({icon, title: response})
+    }
+    else{
+      spotify.search({
+      type: 'track',
+      query: sterm,
+      limit: 10
+    }, function(err, data, actions) {
+      if (err) {
+        return console.log('Error occurred: ' + err);
+      }
+      if (data.tracks.total != 0) {
+        var uri = data.tracks.items[0].external_urls.spotify
+        var artist = data.tracks.items[0].artists[0].name
+        var name = data.tracks.items[0].name
+        var duration = data.tracks.items[0].duration
+        var complete = name + ' - ' + artist
+        const results = {
+          name: name,
+          artist: artist,
+          duration: duration,
+          complete: complete
+        };
+
+        var searchResult = []
+        Object.keys(data.tracks.items).map((result) => {
+          let c = data.tracks.items[result].name + ' - ' + data.tracks.items[result].artists[0].name
+          searchResult = [
+            ...searchResult, {
+              complete: c,
+              uri: data.tracks.items[result].external_urls.spotify
+            }
+          ]
+        })
+        var preview = {
+          'padding': '0'
+        }
+        display({
+          icon,
+          title: results.complete,
+          subtitle: 'test',
+          onSelect: () => search(uri),
+          getPreview: () => <Preview style={preview} searchResult={searchResult}/>
+        });
+      } else {
+        var response = 'No matches for ' + sterm
+
+        display({icon, title: response})
+      }
+    });
+  }
+  }
 }
